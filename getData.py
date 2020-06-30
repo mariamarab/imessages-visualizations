@@ -15,15 +15,20 @@ def localTimeToMacTime(date):
     return ((time.mktime(time.strptime(date, '%Y-%m-%d %H:%M:%S')) - 978307200) * 1e9)
 
 class Connection:
-    def __init__(self, phoneNumber):
+    def __init__(self, phoneNumber=None):
         username = os.popen('whoami').read().strip()
         self.db = "/Users/{username}/Library/Messages/chat.db".format(
             username=username)
         self.connection = sqlite3.connect(self.db, check_same_thread=False)
         self.phoneNumber = phoneNumber
         # self.handle_id = self.getHandleID()
+    
+    def validateNumber(self):
+        if self.phoneNumber is None:
+            raise ValueError("Phone number not provided")
         
     def getHandleID(self):
+        self.validateNumber()            
         query = '''
         SELECT ROWID
         FROM handle
@@ -32,6 +37,7 @@ class Connection:
         return pd.read_sql_query(query, self.connection)
 
     def getChats(self):
+        self.validateNumber()            
         query = '''
         SELECT * 
         FROM chat 
@@ -40,6 +46,7 @@ class Connection:
         return pd.read_sql_query(query, self.connection)
 
     def getMessagesCountOnDate(self, startDate, endDate):
+        self.validateNumber()            
         query = '''
         SELECT count(*), messageT.date
         FROM message messageT
