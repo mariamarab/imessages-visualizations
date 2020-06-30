@@ -9,10 +9,10 @@ import matplotlib.pyplot as plt
 SOLIMANS_PHONE_NUMBER = 28196
 
 def macTimeToLocalTime(timestamp):
-    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp/1000000000 + 978307200))
+    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp/1e9 + 978307200))
 
 def localTimeToMacTime(date):
-    return ((time.mktime(time.strptime(date, '%Y-%m-%d %H:%M:%S')) - 978307200) * 1000000000)
+    return ((time.mktime(time.strptime(date, '%Y-%m-%d %H:%M:%S')) - 978307200) * 1e9)
 
 class Connection:
     def __init__(self, phoneNumber=None):
