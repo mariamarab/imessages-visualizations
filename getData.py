@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 
 SOLIMANS_PHONE_NUMBER = 28196
 
-def macToHRTime(timestamp):
+def macTimeToLocalTime(timestamp):
     return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(timestamp/1000000000 + 978307200))
 
-def HRToMacTime(date):
+def localTimeToMacTime(date):
     return ((time.mktime(time.strptime(date, '%Y-%m-%d %H:%M:%S')) - 978307200) * 1000000000)
 
 class Connection:
@@ -42,7 +42,7 @@ class Connection:
     def getMessagesCountOnDate(self, startDate, endDate):
         query = '''
         SELECT count(*), messageT.date
-        FROM message messageT 
+        FROM message messageT
         INNER JOIN chat_message_join chatMessageT 
         ON (chatMessageT.chat_id=148 OR chatMessageT.chat_id=377) 
         AND messageT.ROWID=chatMessageT.message_id 
